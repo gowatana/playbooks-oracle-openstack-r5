@@ -1,0 +1,8 @@
+TYPE=Ethernet
+NAME=ens224
+DEVICE=ens224
+BOOTPROTO=none
+ONBOOT=yes
+IPADDR={{ vnic_2_ip }}
+NETMASK={{ vnic_2_mask }}
+#PREFIX=24

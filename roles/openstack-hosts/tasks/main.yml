@@ -1,0 +1,22 @@
+---
+
+- name: Set OpenStack hosts entry.
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ item.ip }} {{ item.fqdn }}"
+  with_items:
+    - { fqdn: os-master-01.go-lab.jp, ip: 192.168.30.101 }
+    - { fqdn: os-registry-01.go-lab.jp, ip: 192.168.30.102 }
+    - { fqdn: os-client-01.go-lab.jp, ip: 192.168.30.103 }
+    - { fqdn: os-nfs-01.go-lab.jp,    ip: 192.168.30.104 }
+    - { fqdn: os-ctlr-01.go-lab.jp,   ip: 192.168.30.111 }
+    - { fqdn: os-ctlr-02.go-lab.jp,   ip: 192.168.30.112 }
+    - { fqdn: os-nw-01.go-lab.jp,     ip: 192.168.30.113 }
+    - { fqdn: os-nw-02.go-lab.jp,     ip: 192.168.30.114 }
+    - { fqdn: os-storage-01.go-lab.jp,ip: 192.168.30.115 }
+    - { fqdn: os-storage-02.go-lab.jp,ip: 192.168.30.116 }
+    - { fqdn: os-db-01.go-lab.jp,     ip: 192.168.30.117 }
+    - { fqdn: os-db-02.go-lab.jp,     ip: 192.168.30.118 }
+    - { fqdn: os-host-01.go-lab.jp,   ip: 192.168.30.131 }
+    - { fqdn: os-host-02.go-lab.jp,   ip: 192.168.30.132 }
+

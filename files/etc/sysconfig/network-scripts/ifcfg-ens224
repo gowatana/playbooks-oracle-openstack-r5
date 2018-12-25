@@ -1,0 +1,7 @@
+NAME=ens224
+DEVICE=ens224
+ONBOOT=yes
+TYPE=Ethernet
+BOOTPROTO=none
+IPV6INIT=no
+

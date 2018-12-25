@@ -1,0 +1,10 @@
+---
+
+- name: Install openstack-kolla-preinstall
+  yum:
+    name: "{{ item }}"
+    state: latest
+    enablerepo: ol7_openstack50,ol7_addons
+  with_items:
+   - openstack-kolla-preinstall
+

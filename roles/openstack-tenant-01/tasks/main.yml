@@ -1,0 +1,81 @@
+---
+
+- include_vars: vault/pass_gowatana.yml
+
+- name: Copy OpenStack Tenant settings.
+  template:
+    src: templates/clouds.yml.j2
+    dest: /root/clouds.yml
+    owner: root
+    group: root
+    mode: 0600
+
+- name: OpenStack clouds
+  debug:
+    var: cloud
+
+- name: OpenStack test
+  os_server_facts:
+    cloud: openstack-pj01
+    server: vm0*
+
+- name: OpenStack debug
+  debug:
+    var: openstack_servers
+
+- name: create network
+  os_network:
+    cloud: openstack-pj01
+    state: present
+    name: net01
+
+- name: create subnet
+  os_subnet:
+    cloud: openstack-pj01
+    name: subnet10
+    network_name: net01
+    cidr: 10.0.10.0/24
+    dns_nameservers: 192.168.11.1
+    state: present
+
+- os_router:
+    cloud: openstack-pj01
+    state: present
+    name: router01
+    network: ext-net01
+#    external_fixed_ips:
+#      - subnet: ext-subnet01
+#        ip: 192.158.11.51
+    interfaces:
+      - subnet10
+
+#  - os_user_facts:
+#    cloud: openstack-pj01
+#
+#  - debug:
+#    var: openstack_users
+
+- name: create instance
+  os_server:
+    cloud: openstack-pj01
+    state: present
+    name: vm01
+    image: cirros
+    flavor: f1.micro
+    #key_name: tenant01-key01
+    security_groups: default
+    network: net01
+    floating_ip_pools: ext-net01
+
+- name: create instance
+  os_server:
+    cloud: openstack-pj01
+    state: present
+    name: vm02
+    image: cirros
+    flavor: f1.micro
+    #key_name: tenant01-key01
+    security_groups: default
+    network: net01
+    floating_ip_pools: ext-net01
+

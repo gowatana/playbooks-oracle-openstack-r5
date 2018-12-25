@@ -1,0 +1,36 @@
+---
+
+- name: Install RPM for Python Openstack Client.
+  yum:
+    name: "{{ item }}"
+    state: latest
+    enablerepo: ol7_latest,ol7_optional_latest,ol7_openstack_extras,ol7_software_collections
+  with_items:
+   - gcc
+   - python-devel
+   - python-pip
+   - python27
+
+- name: Install Python Openstack Client.
+  pip:
+    name: "{{ item }}" 
+  with_items:
+    - python-openstackclient  
+    - python-ceilometerclient
+    - python-cinderclient
+    - python-glanceclient
+    - python-heatclient
+    - python-ironicclient
+    - python-magnumclient
+    - python-muranoclient
+    - python-neutronclient
+    - python-novaclient
+    - python-swiftclient
+
+- name: Install pip for ansible openstack modules.
+  pip:
+    name: "{{ item }}" 
+  with_items:
+    - pytz
+    - shade
+

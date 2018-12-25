@@ -1,0 +1,46 @@
+[openstack-r5-fully-expanded:children]
+openstack-kolla-node
+openstack-nfs
+
+[openstack-kolla-node:children]
+openstack-master
+openstack-registry
+openstack-controller
+openstack-host
+openstack-network
+openstack-storage
+openstack-database
+openstack-client
+
+[openstack-master]
+os-master-01 ansible_host=192.168.30.101 
+
+[openstack-registry]
+os-registry-01 ansible_host=192.168.30.102
+
+[openstack-controller]
+os-ctlr-01 ansible_host=192.168.30.111
+os-ctlr-02 ansible_host=192.168.30.112
+
+[openstack-host]
+os-host-01 ansible_host=192.168.30.131
+os-host-02 ansible_host=192.168.30.132
+
+[openstack-client]
+os-client-01 ansible_host=192.168.30.103 
+
+[openstack-network]
+os-nw-01 ansible_host=192.168.30.113
+os-nw-02 ansible_host=192.168.30.114
+
+[openstack-storage]
+os-storage-01 ansible_host=192.168.30.115
+os-storage-02 ansible_host=192.168.30.116
+
+[openstack-database]
+os-db-01 ansible_host=192.168.30.117
+os-db-02 ansible_host=192.168.30.118
+
+[openstack-nfs]
+os-nfs-01 ansible_host=192.168.30.104
+

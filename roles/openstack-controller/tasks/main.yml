@@ -1,0 +1,19 @@
+---
+#- name: create LVM VG cinder-volumes
+#  lvg:
+#    vg: cinder-volumes
+#    pvs: /dev/sdc
+
+- name: Copy /etc/sysconfig/network-scripts/ifcfg-ens224
+  template:
+    src: templates/ifcfg-ens224
+    dest: /etc/sysconfig/network-scripts/ifcfg-ens224
+  notify: restart network
+
+- name: Mount Glance NFS
+  mount:
+    path: /var/lib/glance
+    src: "{{ os_glance_nfs }}:/data/glance"
+    fstype: nfs
+    state: mounted
+

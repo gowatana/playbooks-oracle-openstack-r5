@@ -1,0 +1,87 @@
+---
+
+- name: OL7 common setting.
+  hosts: all
+  remote_user: root
+  gather_facts: false
+  roles:
+    - os-common-ol7
+    - openstack-hosts
+
+- name: kolla docker setting.
+  hosts: openstack-kolla-node
+  remote_user: root
+  gather_facts: false
+  roles:
+    - docker-host-ol7
+    - openstack-registry-client
+
+- name: configure NFS for Glance / Nova
+  hosts: openstack-nfs
+  remote_user: root
+  gather_facts: false
+  roles:
+    - openstack-nfs
+
+- name: configure OpenStack-R5 Docker Registry.
+  hosts: openstack-registry
+  remote_user: root
+  gather_facts: false
+  roles:
+    - openstack-registry
+
+- name: configure OpenStack-R5 Master Node.
+  hosts: openstack-master
+  remote_user: root
+  gather_facts: false
+  roles:
+    - openstack-kolla-master
+    - openstack-kolla-client
+
+- name: configure OpenStack-R5 Controller Node.
+  hosts: openstack-controller
+  remote_user: root
+  gather_facts: false
+  roles:
+    - openstack-controller
+    - openstack-kolla-target-ol7
+
+- name: configure OpenStack-R5 Network Node.
+  hosts: openstack-network
+  remote_user: root
+  gather_facts: false
+  roles:
+    - openstack-network
+    - openstack-kolla-target-ol7
+
+- name: configure OpenStack-R5 Storage Node.
+  hosts: openstack-storage
+  remote_user: root
+  gather_facts: false
+  roles:
+    - openstack-storage
+    - openstack-kolla-target-ol7
+
+- name: configure OpenStack-R5 Database Node.
+  hosts: openstack-database
+  remote_user: root
+  gather_facts: false
+  roles:
+    - openstack-database
+    - openstack-kolla-target-ol7
+
+- name: configure OpenStack-R5 Compute Node.
+  hosts: openstack-host
+  remote_user: root
+  gather_facts: false
+  roles:
+    - openstack-compute
+    - openstack-kolla-target-ol7
+
+- name: configure Python OpenStack Client.
+  hosts: openstack-client
+  remote_user: root
+  gather_facts: false
+  roles:
+#    - openstack-python-client
+

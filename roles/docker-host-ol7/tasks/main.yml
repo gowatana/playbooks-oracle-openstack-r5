@@ -1,0 +1,42 @@
+---
+
+- name: Install Docker RPM packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+    enablerepo: ol7_addons
+  with_items:
+   - docker-engine
+
+- name: Stop the firewalld service
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: create Btrfs for /var/lib/docker
+  filesystem:
+    fstype: btrfs
+    dev: /dev/sdb
+    opts: "-L var-lib-docker"
+
+- name: Mount /var/lib/docker
+  mount:
+    path: /var/lib/docker
+    src: LABEL=var-lib-docker
+    fstype: btrfs
+    state: mounted
+    #state: present
+
+- name: Start the docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Copy /etc/sysctl.d/ip_forward.conf
+  copy:
+    src: files/etc/sysctl.d/ip_forward.conf
+    dest: /etc/sysctl.d/ip_forward.conf
+  notify: update sysctl
+

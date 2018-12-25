@@ -1,0 +1,8 @@
+TYPE=Ethernet
+NAME=ens161
+DEVICE=ens161
+BOOTPROTO=none
+ONBOOT=yes
+IPADDR={{ vnic_4_ip }}
+NETMASK={{ vnic_4_mask }}
+#PREFIX=24

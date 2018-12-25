@@ -1,0 +1,13 @@
+---
+
+- name: create /etc/docker/certs.d/os-registry-01.go-lab.jp:5443 directory.
+  file:
+    path: /etc/docker/certs.d/os-registry-01.go-lab.jp:5443
+    state: directory
+    recurse: yes
+
+- name: Copy Registry Cert to Client. os-registry-01.crt
+  copy:
+    src: files/cert/os-registry-01.crt
+    dest: /etc/docker/certs.d/os-registry-01.go-lab.jp:5443/ca.crt
+

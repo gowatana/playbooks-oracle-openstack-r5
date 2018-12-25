@@ -1,0 +1,11 @@
+---
+# ansible-playbook -i hosts os-tenant-01.yml --ask-vault-pass
+
+- name: create openstack resources.
+  hosts: 192.168.11.28
+  remote_user: root
+#  hosts: localhost
+#  connection: local
+  roles:
+    - openstack-tenant-01
+

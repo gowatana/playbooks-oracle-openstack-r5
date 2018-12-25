@@ -1,0 +1,4 @@
+# OpenStack Database Node
+vnic_2_ip:   192.168.31.118
+vnic_2_mask: 255.255.255.0
+

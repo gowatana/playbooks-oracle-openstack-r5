@@ -1,0 +1,25 @@
+---
+
+lab_gateway: 192.168.30.1
+lab_domain: go-lab.jp
+lab_dns_1: 192.168.1.101
+lab_dns_2: 192.168.1.102
+
+# vars for NTP Client
+lab_ntp_servers:
+- infra-dns-01.go-lab.jp
+- infra-dns-02.go-lab.jp
+
+# vars for ldap-client
+lab_ldap_1: infra-ldap-01s.go-lab.jp
+lab_ldap_2: infra-ldap-02s.go-lab.jp
+lab_ldap_basedn: dc=go-lab,dc=jp
+
+# vars for PXE
+lab_pxe: 192.168.1.115
+lab_yum: 192.168.1.105
+lab_pxe_ip_start: 192.168.1.60
+lab_pxe_ip_end: 192.168.1.79
+
+# OpenStack
+os_glance_nfs: 192.168.30.104

@@ -1,0 +1,112 @@
+---
+
+- name: set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Copy /etc/yum.repos.d/public-yum-ol7.repo
+  copy:
+    src: files/etc/yum.repos.d/public-yum-ol7.repo
+    dest: /etc/yum.repos.d/public-yum-ol7.repo
+
+- name: Install common RPMs.
+  yum:
+    name: "{{ item }}"
+    state: latest
+    enablerepo: ol7_latest,ol7_addons
+  with_items:
+    - open-vm-tools
+    - unzip
+    - bzip2
+    - nfs-utils
+    - tcpdump
+    - iputils
+    - net-tools
+    - lsof
+    - jq
+
+- name: Install UEK R5
+  yum:
+    name: "{{ item }}"
+    state: latest
+    enablerepo: ol7_UEKR5
+  with_items:
+   - kernel-uek
+
+- name: Install RPMs for ansible.
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - NetworkManager-glib
+
+- name: Set Static IP. {{ nic1 }}
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
+    line: 'IPADDR={{ ansible_host }}'
+  notify: restart network
+
+- name: Fix Static IP. {{ nic1 }}
+  replace:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
+    regexp: '^IPADDR=.*$'
+    replace: 'IPADDR={{ ansible_host }}'
+  notify: restart network
+
+- name: Set Default Gateway. {{ nic1 }}
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
+    line: 'GATEWAY={{ lab_gateway }}'
+  notify: restart network
+
+- name: Fix Default Gateway. {{ nic1 }}
+  replace:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
+    regexp: '^GATEWAY=.*$'
+    replace: 'GATEWAY={{ lab_gateway }}'
+  notify: restart network
+
+- name: Set DNS 1. {{ nic1 }}
+  replace:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
+    regexp: '^DNS1=.*$'
+    replace: 'DNS1={{ lab_dns_1 }}'
+  notify: restart network
+
+- name: Set DNS 2. {{ nic1 }}
+  replace:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
+    regexp: '^DNS2=.*$'
+    replace: 'DNS2={{ lab_dns_2 }}'
+  notify: restart network
+
+- name: Set Search DOMAIN. {{ nic1 }}
+  replace:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
+    regexp: '^DOMAIN=.*$'
+    replace: 'DOMAIN={{ lab_domain }}'
+  notify: restart network
+
+- name: Set DHCP to Static. {{ nic1 }}
+  replace:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
+    regexp: '^BOOTPROTO=.*$'
+    replace: 'BOOTPROTO=none'
+  notify: restart network
+
+- name: Set selinux disable
+  replace:
+    dest: /etc/selinux/config
+    regexp: '^SELINUX=.*$'
+    replace: 'SELINUX=disabled'
+
+- name: Start chronyd service
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: Copy /etc/sysctl.d/ipv6.conf
+  copy:
+    src: files/etc/sysctl.d/ipv6.conf
+    dest: /etc/sysctl.d/ipv6.conf

@@ -1,0 +1,70 @@
+---
+
+- name: Install RPM packages
+  yum: name={{ item }} state=installed
+  with_items:
+   - nfs-utils
+
+- name: create NFS Mount point.
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - /data/glance
+    - /data/nova
+
+- name: create Btrfs for /data/glance
+  filesystem:
+    fstype: btrfs
+    dev: /dev/sdb
+    opts: "-L data-glance"
+
+- name: Mount /data/glance
+  mount:
+    path: /data/glance
+    src: LABEL=data-glance
+    fstype: btrfs
+    state: mounted
+
+- name: create Btrfs for /data/nova
+  filesystem:
+    fstype: btrfs
+    dev: /dev/sdc
+    opts: "-L data-nova"
+
+- name: Mount /data/nova
+  mount:
+    path: /data/nova
+    src: LABEL=data-nova
+    fstype: btrfs
+    state: mounted
+
+- name: Copy /etc/exprts
+  copy:
+    src: files/etc/exports
+    dest: /etc/exports
+
+- name: Copy /etc/systemd/system/rpcbind.socket
+  copy:
+    src: files/etc/systemd/system/rpcbind.socket
+    dest: /etc/systemd/system/rpcbind.socket
+
+- name: Start rpc-statd service.
+  service:
+    name: rpc-statd
+    state: started
+    enabled: yes
+
+- name: Start nfs service.
+  service:
+    name: nfs
+    state: started
+    enabled: yes
+
+- name: Stop firewalld service
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+

@@ -1,0 +1,39 @@
+---
+
+- name: create /var/lib/registry directory.
+  file:
+    path: /var/lib/registry
+    state: directory
+    mode: 0755
+
+- name: create Btrfs for /var/lib/registry
+  filesystem:
+    fstype: btrfs
+    dev: /dev/sdc
+    opts: "-L var-lib-registry"
+
+- name: Mount /var/lib/registry
+  mount:
+    path: /var/lib/registry
+    src: LABEL=var-lib-registry
+    fstype: btrfs
+    state: mounted
+
+- name: create /var/lib/registry/conf.d directory.
+  file:
+    path: /var/lib/registry/conf.d
+    state: directory
+    mode: 0755
+
+- name: Copy Registry key. os-registry-01.key
+  copy:
+    src: files/cert/os-registry-01.key
+    dest: /var/lib/registry/conf.d/os-registry-01.key
+    mode: 0600
+
+- name: Copy Registry Cert. os-registry-01.crt
+  copy:
+    src: files/cert/os-registry-01.crt
+    dest: /var/lib/registry/conf.d/os-registry-01.crt
+    #mode: 0600
+

@@ -1,0 +1,3 @@
+/data/glance 192.168.30.0/24(rw,no_root_squash)
+/data/nova   192.168.30.0/24(rw,no_root_squash)
+

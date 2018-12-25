@@ -1,0 +1,7 @@
+# OpenStack Storage Node
+vnic_2_ip:   192.168.31.116
+vnic_2_mask: 255.255.255.0
+
+vnic_3_ip:   192.168.34.116
+vnic_3_mask: 255.255.255.0
+

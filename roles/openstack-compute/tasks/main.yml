@@ -1,0 +1,35 @@
+---
+
+- name: Copy /etc/sysconfig/network-scripts/ifcfg-ens224
+  template:
+    src: templates/ifcfg-ens224
+    dest: /etc/sysconfig/network-scripts/ifcfg-ens224
+  notify: restart network
+
+- name: Copy /etc/sysconfig/network-scripts/ifcfg-ens256
+  template:
+    src: templates/ifcfg-ens256
+    dest: /etc/sysconfig/network-scripts/ifcfg-ens256
+  notify: restart network
+
+- name: Copy /etc/sysconfig/network-scripts/ifcfg-ens161
+  template:
+    src: templates/ifcfg-ens161
+    dest: /etc/sysconfig/network-scripts/ifcfg-ens161
+  notify: restart network
+
+- name: create Nova NFS Mount point.
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - /var/lib/kolla/var/lib/nova/instances
+
+- name: Change-to-Storage-NW Mount Nova NFS
+  mount:
+    path: /var/lib/kolla/var/lib/nova/instances
+    src: 192.168.30.104:/data/nova
+    fstype: nfs
+    state: mounted
+

@@ -1,0 +1,20 @@
+---
+
+- name: Copy /etc/sysconfig/network-scripts/ifcfg-ens224
+  template:
+    src: templates/ifcfg-ens224
+    dest: /etc/sysconfig/network-scripts/ifcfg-ens224
+  notify: restart network
+
+- name: Copy /etc/sysconfig/network-scripts/ifcfg-ens256
+  template:
+    src: templates/ifcfg-ens256
+    dest: /etc/sysconfig/network-scripts/ifcfg-ens256
+  notify: restart network
+
+- name: Copy /etc/sysconfig/network-scripts/ifcfg-ens161
+  template:
+    src: templates/ifcfg-ens161
+    dest: /etc/sysconfig/network-scripts/ifcfg-ens161
+  notify: restart network
+

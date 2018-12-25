@@ -1,0 +1,8 @@
+TYPE=Ethernet
+NAME=ens256
+DEVICE=ens256
+BOOTPROTO=none
+ONBOOT=yes
+IPADDR={{ vnic_3_ip }}
+NETMASK={{ vnic_3_mask }}
+#PREFIX=24
