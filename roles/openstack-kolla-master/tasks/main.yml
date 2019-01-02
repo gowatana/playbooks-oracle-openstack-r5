@@ -10,3 +10,19 @@
    - openstack-kollacli
    - bash-completion
 
+- name: Create Directory for cinder.conf
+  file:
+    path: /etc/kolla/config
+    owner: kolla
+    group: kolla
+    mode: 0775
+    state: directory
+
+- name: Copy cinder.conf for Storage Node
+  copy:
+    src: files/cinder.conf
+    dest: /etc/kolla/config/cinder.conf
+    owner: kolla
+    group: kolla
+    mode: 0664
+
