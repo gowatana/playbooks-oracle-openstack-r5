@@ -4,42 +4,6 @@
   hostname:
     name: "{{ inventory_hostname }}"
 
-- name: Copy /etc/yum.repos.d/public-yum-ol7.repo
-  copy:
-    src: files/etc/yum.repos.d/public-yum-ol7.repo
-    dest: /etc/yum.repos.d/public-yum-ol7.repo
-
-- name: Install common RPMs.
-  yum:
-    name: "{{ item }}"
-    state: latest
-    enablerepo: ol7_latest,ol7_addons
-  with_items:
-    - open-vm-tools
-    - unzip
-    - bzip2
-    - nfs-utils
-    - tcpdump
-    - iputils
-    - net-tools
-    - lsof
-    - jq
-
-- name: Install UEK R5
-  yum:
-    name: "{{ item }}"
-    state: latest
-    enablerepo: ol7_UEKR5
-  with_items:
-   - kernel-uek
-
-- name: Install RPMs for ansible.
-  yum:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - NetworkManager-glib
-
 - name: Set Static IP. {{ nic1 }}
   lineinfile:
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
@@ -110,3 +74,71 @@
   copy:
     src: files/etc/sysctl.d/ipv6.conf
     dest: /etc/sysctl.d/ipv6.conf
+
+- name: Remove /etc/yum.repos.d/public-yum-ol7.repo
+  file:
+    path: /etc/yum.repos.d/public-yum-ol7.repo
+    state: absent
+
+- name: Set Yum repo local_ol7_latest
+  yum_repository:
+    name: local_ol7_latest
+    description: Home Lab - OL7 Latest
+    baseurl: http://infra-repo-01.go-lab.jp/yum/ol7_latest/
+    gpgcheck: no
+    enabled: yes
+
+- name: Set Yum repo local_ol7_UEKR5
+  yum_repository:
+    name: local_ol7_UEKR5
+    description: Home Lab - UEK R5
+    baseurl: http://infra-repo-01.go-lab.jp/yum/ol7_UEKR5/
+    gpgcheck: no
+    enabled: yes
+
+- name: Set Yum repo local_ol7_addons
+  yum_repository:
+    name: local_ol7_ol7_addons
+    description: Home Lab - OL7 addons
+    baseurl: http://infra-repo-01.go-lab.jp/yum/ol7_addons/
+    gpgcheck: no
+    enabled: yes
+
+- name: Set Yum repo local_ol7_optional_latest
+  yum_repository:
+    name: local_ol7_optional_latest
+    description: Home Lab - OL7 Optional Latest
+    baseurl: http://infra-repo-01.go-lab.jp/yum/ol7_optional_latest/
+    gpgcheck: no
+    enabled: yes
+
+- name: Set Yum repo local_ol7_openstack_r5
+  yum_repository:
+    name: local_ol7_openstack_r5
+    description: Home Lab - OpenStack R5
+    baseurl: http://infra-repo-01.go-lab.jp/yum/ol7_openstack50/
+    gpgcheck: no
+    enabled: yes
+
+- name: Install common RPMs.
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - open-vm-tools
+    - unzip
+    - bzip2
+    - nfs-utils
+    - tcpdump
+    - iputils
+    - net-tools
+    - lsof
+    - jq
+
+- name: Install UEK R5
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+   - kernel-uek
+
