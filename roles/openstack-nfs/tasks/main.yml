@@ -1,9 +1,11 @@
 ---
 
 - name: Install RPM packages
-  yum: name={{ item }} state=installed
+  yum:
+    name: "{{ item }}"
+    state: installed
   with_items:
-   - nfs-utils
+  - nfs-utils
 
 - name: create NFS Mount point.
   file:
@@ -11,8 +13,8 @@
     state: directory
     recurse: yes
   with_items:
-    - /data/glance
-    - /data/nova
+  - /data/glance
+  - /data/nova
 
 - name: create Btrfs for /data/glance
   filesystem:

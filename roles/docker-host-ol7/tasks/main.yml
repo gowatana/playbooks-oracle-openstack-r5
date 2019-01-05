@@ -4,7 +4,6 @@
   yum:
     name: "{{ item }}"
     state: latest
-    enablerepo: ol7_addons
   with_items:
    - docker-engine
 
